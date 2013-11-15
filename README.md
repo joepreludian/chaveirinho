@@ -3,9 +3,9 @@ chaveirinho
 
 Compactador em python criado para o desafio realizado em sala de aula.
 
-Equipe
+Equipe:
 
-# Pedro Henrique
-# Jonhnatha Trigueiro
-# Emmanuel Barbosa
-# Jean Marcio
+* Pedro Henrique
+* Jonhnatha Trigueiro
+* Emmanuel Barbosa
+* Jean Marcio

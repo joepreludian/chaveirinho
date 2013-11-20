@@ -1,4 +1,5 @@
-import operator
+import operator, Queue
+from ucompactor import exceptions as ex
 
 
 def get_file(input_file):
@@ -15,97 +16,51 @@ def get_file(input_file):
 
 def get_frequency(input_stream):
 
-    frequency = {}
+    frequencies = {}
+    frequencies_total = 0
 
     for data in input_stream:
-        if data in frequency:
-            frequency[data] += 1
+        if data in frequencies:
+            frequencies[data] += 1
         else:
-            frequency[data] = 1
+            frequencies[data] = float(1)
 
-    return frequency
+        frequencies_total += 1
+
+    for letter in frequencies:
+        frequencies[letter] = round((frequencies[letter]*100) / frequencies_total, 3)
+
+    return frequencies
 
 
 def sort_frequency(frequency_dict):
 
-    ordered_frequency = sorted(frequency_dict.iteritems(), key=operator.itemgetter(1), reverse=True)
+    ordered_frequency = sorted(frequency_dict.iteritems(), key=lambda freq: freq[1])
     return ordered_frequency
 
 
+class HuffmanNode(object):
+    def __init__(self, left=None, right=None):
+        self.left = left
+        self.right = right
 
-class Node(object):
-    """
-    Tree node: left and right child + data which can be any object
-    """
-    def __init__(self, data):
-        """
-        Node constructor
+    def children(self):
+        return (self.left, self.right)
 
-        @param data node data object
-        """
-        self.left = None
-        self.right = None
-        self.data = data
 
-    def insert(self, data):
-        """
-        Insert new node with data
+def create_tree(frequencies):
+    p = Queue.Queue()
 
-        @param data node data object to insert
-        """
-        if data < self.data:
-            if self.left is None:
-                self.left = Node(data)
-            else:
-                self.left.insert(data)
-        else:
-            if self.right is None:
-                self.right = Node(data)
-            else:
-                self.right.insert(data)
+    for value in frequencies:
+        p.put(value)
 
-    def lookup(self, data, parent=None):
-        """
-        Lookup node containing data
+    while p.qsize() > 1:
+        r,l = p.get(), p.get()
+        node = HuffmanNode(l, r)
+        p.put((node, l[1]+r[1]))
 
-        @param data node data object to look up
-        @param parent node's parent
-        @returns node and node's parent if found or None, None
-        """
-        if data < self.data:
-            if self.left is None:
-                return None, None
-            return self.left.lookup(data, self)
-        elif data > self.data:
-            if self.right is None:
-                return None, None
-            return self.right.lookup(data, self)
-        else:
-            return self, parent
+    return p.get()
 
-    def delete(self, data):
-        """
-        Delete node containing data
 
-        @param data node's content to delete
-        """
-        # get node containing data
-        node, parent = self.lookup(data)
-        if node is not None:
-            children_count = node.children_count()
-
-    def tree_data(self):
-        """
-        Generator to get the tree nodes data
-        """
-        # we use a stack to traverse the tree in a non-recursive way
-        stack = []
-        node = self
-        while stack or node:
-            if node:
-                stack.append(node)
-                node = node.left
-            else: # we are returning so we pop the node and we yield it
-                node = stack.pop()
-                yield node.data
-                node = node.right
+def create_table(huffmann_tree):
+    pass

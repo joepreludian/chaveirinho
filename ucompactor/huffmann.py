@@ -45,7 +45,7 @@ class HuffmanNode(object):
         self.right = right
 
     def children(self):
-        return (self.left, self.right)
+        return self.left, self.right
 
 
 def create_tree(frequencies):
@@ -61,6 +61,42 @@ def create_tree(frequencies):
 
     return p.get()
 
+_huffmann_table = []
+def _iterate_table(huffmann_tree, direction=None, binary_path=''):
+
+    node = huffmann_tree[0]
+
+    if direction == 'left':
+        binary_path += '1'
+    elif direction == 'right':
+        binary_path += '0'
+
+    if isinstance(node, HuffmanNode):
+        left, right = node.children()
+        _iterate_table(left, direction='left', binary_path=binary_path)
+        _iterate_table(right, direction='right', binary_path=binary_path)
+    else:
+        _huffmann_table.append((node[0], binary_path))
+
 
 def create_table(huffmann_tree):
-    pass
+
+    _iterate_table(huffmann_tree)
+    new_huffmann = _normalize_table(_huffmann_table)
+
+    return new_huffmann
+
+def _normalize_table(huffmann_table):
+
+    size = 0
+    new_table = []
+
+    for item in huffmann_table:
+        if len(item[1]) > size:
+            size = len(item[1])
+
+    for item in huffmann_table:
+        new_table.append((item[0], item[1].zfill(size)))
+
+    huffmann_table = new_table
+    return huffmann_table

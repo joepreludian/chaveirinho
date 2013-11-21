@@ -1,4 +1,4 @@
-from ucompactor.huffmann import get_file, get_frequency, sort_frequency, create_tree
+from ucompactor.huffmann import get_file, get_frequency, sort_frequency, create_tree, create_table
 
 
 def compress(input_file, output_file):
@@ -7,8 +7,8 @@ def compress(input_file, output_file):
     frequency_get = get_frequency(raw_file)
     sorted_frequency = sort_frequency(frequency_get)
     huffmann_tree = create_tree(sorted_frequency)
-    huffmann
 
+    huffmann_table = create_table(huffmann_tree)
 
     print 'comprimindo arquivo %s em %s' % (input_file, output_file)
 

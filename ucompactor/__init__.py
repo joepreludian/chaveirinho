@@ -1,6 +1,10 @@
-from ucompactor.huffmann import get_file, get_frequency, sort_frequency,\
-    create_tree, create_table, compress_data_huffmann, compress_rle, write_file, make_file_content
+# encoding: utf8
+
+from ucompactor.file import get_file, write_file, make_file_content
+from ucompactor.huffmann import get_frequency, sort_frequency,\
+    create_tree, create_table, compress_data_huffmann
 from bwt import bwt_encoder, bwt_decoder
+from ucompactor.rle import compress_rle
 
 
 def compress(input_file, output_file):
@@ -30,8 +34,5 @@ def compress(input_file, output_file):
         print 'Ocorreu um erro ao comprimir o arquivo'
 
 
-    print 'comprimindo arquivo %s em %s' % (input_file, output_file)
-
-
 def decompress(input_file, output_file):
-    print 'descomprimindo arquivo %s em %s' % (input_file, output_file)
+    print 'Ainda não implementado. =)' % (input_file, output_file)

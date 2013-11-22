@@ -12,7 +12,10 @@ def main():
     if arguments.decompress:
         ucompactor.decompress(input_file=arguments.input, output_file=arguments.output)
     else:
-        ucompactor.compress(input_file=arguments.input, output_file=arguments.output)
+        if not arguments.input or not arguments.output:
+           parser.print_help()
+        else:
+            ucompactor.compress(input_file=arguments.input, output_file=arguments.output)
 
 if __name__ == '__main__':
     main()

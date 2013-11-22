@@ -49,6 +49,8 @@ def create_tree(frequencies):
     return p.get()
 
 _huffmann_table = []
+
+
 def _iterate_table(huffmann_tree, direction=None, binary_path=''):
 
     node = huffmann_tree[0]

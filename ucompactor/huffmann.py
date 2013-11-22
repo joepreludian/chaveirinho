@@ -1,5 +1,5 @@
-import operator, Queue
-from ucompactor import exceptions as ex
+from itertools import groupby
+import Queue
 
 
 def get_file(input_file):
@@ -12,6 +12,17 @@ def get_file(input_file):
         f.close()
 
     return raw_file
+
+
+def write_file(output_file, data):
+
+    f = open(output_file, 'w')
+    try:
+        f.write(data)
+    finally:
+        f.close()
+
+    return True
 
 
 def get_frequency(input_stream):
@@ -86,6 +97,7 @@ def create_table(huffmann_tree):
 
     return new_huffmann
 
+
 def _normalize_table(huffmann_table):
 
     size = 0
@@ -100,3 +112,38 @@ def _normalize_table(huffmann_table):
 
     huffmann_table = new_table
     return huffmann_table
+
+
+def compress_data_huffmann(raw_file, huffmann_table):
+
+    return_file = raw_file
+
+    for huffman_data in huffmann_table:
+        return_file = return_file.replace(huffman_data[0], huffman_data[1])
+
+    return return_file
+
+
+def compress_rle (plainText):
+    res = []
+
+    for k,i in groupby(plainText):
+        run = list(i)
+        if len(run) > 4:
+            res.append("/{:02}{}".format(len(run), k))
+        else:
+            res.extend(run)
+
+    return "".join(res)
+
+
+def make_file_content(header, body):
+
+    data_output = "%s" % header['bwt']
+
+    for item in header['table']:
+        data_output += '%s%s' % (item[0], item[1])
+
+    data_output += ':%s' % body
+
+    return data_output

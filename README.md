@@ -1,7 +1,12 @@
 chaveirinho
 ===========
 
-Compactador em python criado para o desafio realizado em sala de aula.
+Compactador em python criado para o desafio proposto em sala de aula.
+O objetivo é criar um compressor utilizando Huffmann, BWT e RLE.
+
+Para executar digite:
+
+    python chaveirinho.py --input teste.txt --output teste.chv
 
 Equipe:
 
